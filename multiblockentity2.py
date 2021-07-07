@@ -7,14 +7,39 @@ arrow = {'left':0x25, 'up':0x26, 'right':0x27, 'down':0x28}
 
 gamearea = []
 
-interval = 4
+interval = 8
 
-player = {(-1,-1):'╔', (0,-1):'┬', (1,-1):'╗',
-          (-1,0):'├', (0,0):'┼', (1,0):'┤',
-          (-1,1):'╚', (0,1):'┴', (1,1):'╝'}
+playerheight = interval-1
+playerwidth = interval-1
+
+player = {}
+
+def createplayer():
+    global playerheight, playerwidth, player
+    for y in range(playerheight):
+        for x in range(playerwidth):
+            player[(x,y)] = ' '
+    for x in range(playerwidth):
+        player[(x,0)] = '─'
+        player[(x,playerheight//2)] = '─'
+        player[(x,playerheight-1)] = '─'
+    for y in range(playerheight):
+        player[(0,y)] = '│'
+        player[(playerheight//2,y)] = '│'
+        player[(playerheight-1,y)] = '│'
+    player[(0,0)] = '╔'
+    player[(playerwidth//2,0)] = '┬'
+    player[(playerwidth-1,0)] = '╗'
+    player[(0,playerheight//2)] = '├'
+    player[(playerwidth//2,playerheight//2)] = '┼'
+    player[(playerwidth-1,playerheight//2)] = '┤'
+    player[(0,playerheight-1)] = '╚'
+    player[(playerwidth//2,playerheight-1)] = '┴'
+    player[(playerwidth-1,playerheight-1)] = '╝'
+    
 
 xmax = int(input("Enter the width of the game area: ")) * interval + 1
-ymax = int(input("Enter the height of the game area: ")) * interval + 1
+ymax = int(input("Enter the width of the game area: ")) * interval + 1
 
 """
 def maximize():
@@ -48,17 +73,19 @@ def updategame():
     for y in range(ymax):
         gamearea[y] = newline(y)
 
-i = interval//2
-j = interval//2
+i = 1
+j = 1
 
 setgame()
-
+createplayer()
 def setplayer(a, b):
     setgame()
-    for y in range(-1,2):
-        for x in range(-1,2):
-            gamearea[b+y][a+x] = player[(x,y)]
-
+    for y in range(playerheight):
+        for x in range(playerwidth):
+            try:
+                gamearea[b+y][a+x] = player[(x,y)]
+            except:
+                pass
 while(1):
     system("cls")
     updategame()
